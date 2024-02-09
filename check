@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loyalty Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffeb3b; /* Yellow */
+            color: #614f3e; /* Brown */
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        h2 {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        label {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #614f3e; /* Brown */
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #614f3e; /* Brown */
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #3e3429; /* Darker Brown */
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        .faq {
+            margin-top: 40px;
+        }
+        .faq h2 {
+            color: #333;
+        }
+        .faq-item {
+            margin-bottom: 20px;
+        }
+        .faq-question {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .faq-answer {
+            font-size: 16px;
+        }
+        .regulation {
+            margin-top: 40px;
+        }
+        .regulation h2 {
+            color: #333;
+        }
+        .regulation p {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Loyalty Checker</h1>
+            <p>Check your loyalty points here.</p>
+        </div>
+        <label for="nameInput">Enter your name:</label><br>
+        <input type="text" id="nameInput" required><br>
+        <button onclick="checkPoints()">Check Points</button>
+        <div id="result"></div>
+
+        <div class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question">How do I earn loyalty points?</div>
+                <div class="faq-answer">You earn loyalty points by making purchases or participating in promotional events. Points are awarded based on the terms and conditions of the loyalty program.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How often are points updated?</div>
+                <div class="faq-answer">Points are typically updated within 24-48 hours of a qualifying transaction.</div>
+            </div>
+            <!-- Add more FAQ items as needed -->
+        </div>
+
+        <div class="regulation">
+            <h2>Regulation</h2>
+            <p>Our loyalty program follows industry-standard regulations to ensure fairness and transparency. By participating in the program, you agree to abide by the terms and conditions outlined in our program guidelines.</p>
+        </div>
+    </div>
+
+    <script>
+        function checkPoints() {
+            const name = document.getElementById("nameInput").value.trim().toUpperCase();
+            fetch('https://raw.githubusercontent.com/holyaurora2/loyalty-checker/main/loyalty_data.json')
+            .then(response => response.json())
+            .then(data => {
+                const entry = data.find(entry => entry.Name.toUpperCase() === name);
+                if (entry) {
+                    displayResult(`${name} has ${entry.Points} points.`);
+                } else {
+                    displayResult("Name not found.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                displayResult("Error occurred while fetching data.");
+            });
+        }
+
+        function displayResult(message) {
+            document.getElementById("result").textContent = message;
+        }
+    </script>
+</body>
+</html>
